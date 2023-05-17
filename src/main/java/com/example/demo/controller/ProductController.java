@@ -60,7 +60,7 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchProductList(String title) {
+    public ResponseEntity<?> searchProductList(@RequestParam("title") String title) {
         String temporaryUserId = "GoEunPark"; //temporary user id.
 
 
