@@ -49,7 +49,6 @@ public class ProductController {
     public ResponseEntity<?> retrieveProductList() {
         String temporaryUserId = "GoEunPark"; //temporary user id.
 
-
         List<ProductEntity> entities = service.retrieve(temporaryUserId);
 
         List<ProductDTO> dtos = entities.stream().map(ProductDTO::new).collect(Collectors.toList());

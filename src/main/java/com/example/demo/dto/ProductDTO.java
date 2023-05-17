@@ -15,12 +15,14 @@ public class ProductDTO {
     private String title;
     private String maker;
     private String color;
+    private String userId;
 
     public ProductDTO(final ProductEntity entity){
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.maker = entity.getMaker();
         this.color = entity.getColor();
+        this.userId = entity.getUserId();
     }
 
     public static ProductEntity toEntity(ProductDTO dto) {
@@ -29,6 +31,7 @@ public class ProductDTO {
                 .title(dto.getTitle())
                 .maker(dto.getMaker())
                 .color(dto.getColor())
+                .userId(dto.getUserId())
                 .build();
     }
 }

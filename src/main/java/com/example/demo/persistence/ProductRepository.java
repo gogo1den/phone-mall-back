@@ -12,5 +12,5 @@ public interface ProductRepository extends JpaRepository<ProductEntity, String> 
 
     //@Query(value = "select * from Todo t where t.userid = ?1", nativeQuery = true)
     List<ProductEntity> findByUserId(String userId);
-    Optional<ProductEntity> findByTitleContaining(String title);
+    Optional<ProductEntity> findByTitle(String title);
 }

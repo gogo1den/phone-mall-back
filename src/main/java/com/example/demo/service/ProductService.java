@@ -41,7 +41,7 @@ public class ProductService {
 
         repository.save(entity);
 
-        log.info("Entity Id : {} is saved.", entity.getId());
+        log.info("Entity Id : {} is saved.", entity.getUserId());
 
         return repository.findByUserId(entity.getUserId());
 
@@ -53,7 +53,7 @@ public class ProductService {
     }
 
     public Optional<ProductEntity> search(final String title) {
-        final Optional<ProductEntity> origin = repository.findByTitleContaining(title);
+        final Optional<ProductEntity> origin = repository.findByTitle(title);
         return origin;
     }
 
@@ -61,7 +61,7 @@ public class ProductService {
     public List<ProductEntity> update(ProductEntity entity) {
         validate(entity);
 
-        final Optional<ProductEntity> original = repository.findById(entity.getId());
+        final Optional<ProductEntity> original = repository.findByTitle(entity.getTitle());
 
         original.ifPresent(product -> {
             product.setTitle(entity.getTitle());
