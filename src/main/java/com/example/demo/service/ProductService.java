@@ -43,13 +43,17 @@ public class ProductService {
 
         log.info("Entity Id : {} is saved.", entity.getUserId());
 
-        return repository.findByUserId(entity.getUserId());
+        return retrieveAll();
 
     }
 
     public List<ProductEntity>retrieve(final String userId) {
         return repository.findByUserId(userId);
 
+    }
+
+    public List<ProductEntity> retrieveAll() {
+        return repository.findAll();
     }
 
     public Optional<ProductEntity> search(final String title) {
@@ -67,11 +71,12 @@ public class ProductService {
             product.setTitle(entity.getTitle());
             product.setMaker(entity.getMaker());
             product.setColor(entity.getColor());
+            product.setUserId(entity.getUserId());
 
             repository.save(product);
         });
 
-        return retrieve(entity.getUserId());
+        return retrieveAll();
     }
 
     public List<ProductEntity> delete(final ProductEntity entity) {
@@ -86,7 +91,7 @@ public class ProductService {
 
             throw new RuntimeException("error deleting entity" + entity.getId());
         }
-        return retrieve(entity.getUserId());
+        return retrieveAll();
     }
 
     private void validate(final ProductEntity entity){

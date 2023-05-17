@@ -28,7 +28,13 @@ public class ProductController {
 
             entity.setId(null);
 
-            entity.setUserId(temporaryUserId);
+
+            if(dto.getUserId()!=null) {
+                entity.setUserId(dto.getUserId());
+            }
+            else {
+                entity.setUserId(temporaryUserId);
+            }
 
             List<ProductEntity> entities = service.create(entity);
 
@@ -47,9 +53,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<?> retrieveProductList() {
-        String temporaryUserId = "GoEunPark"; //temporary user id.
-
-        List<ProductEntity> entities = service.retrieve(temporaryUserId);
+        List<ProductEntity> entities = service.retrieveAll();
 
         List<ProductDTO> dtos = entities.stream().map(ProductDTO::new).collect(Collectors.toList());
 
@@ -97,11 +101,10 @@ public class ProductController {
     @PutMapping
     public ResponseEntity<?> updateProduct(@RequestBody ProductDTO dto) {
         try {
-            String temporaryUserId = "GoEunPark";
 
             ProductEntity entity = ProductDTO.toEntity(dto);
 
-            entity.setUserId(temporaryUserId);
+            entity.setUserId(dto.getUserId());
 
             List<ProductEntity> entities = service.update(entity);
 
