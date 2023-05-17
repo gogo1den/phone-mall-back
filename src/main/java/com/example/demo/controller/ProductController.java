@@ -59,6 +59,20 @@ public class ProductController {
         return ResponseEntity.ok().body(response);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<?> searchProductList(String title) {
+        String temporaryUserId = "GoEunPark"; //temporary user id.
+
+
+        Optional<ProductEntity> entities = service.search(title);
+
+        List<ProductDTO> dtos = entities.stream().map(ProductDTO::new).collect(Collectors.toList());
+
+        ResponseDTO<ProductDTO> response = ResponseDTO.<ProductDTO>builder().data(dtos).build();
+
+        return ResponseEntity.ok().body(response);
+    }
+
     @DeleteMapping
     public ResponseEntity<?> deleteProduct(@RequestBody ProductDTO dto){
         try{

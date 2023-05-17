@@ -52,10 +52,8 @@ public class ProductService {
 
     }
 
-    public Optional<ProductEntity> search(ProductEntity entity) {
-        final Optional<ProductEntity> origin = repository.findByTitleContaining(entity.getTitle());
-
-
+    public Optional<ProductEntity> search(final String title) {
+        final Optional<ProductEntity> origin = repository.findByTitleContaining(title);
         return origin;
     }
 
@@ -79,8 +77,10 @@ public class ProductService {
     public List<ProductEntity> delete(final ProductEntity entity) {
         validate(entity);
 
+        final ProductEntity origin = search(entity.getTitle()).get();
+
         try{
-            repository.delete(entity);
+            repository.delete(origin);
         } catch(Exception e){
             log.error("error deleting entity", entity.getId(), e);
 
