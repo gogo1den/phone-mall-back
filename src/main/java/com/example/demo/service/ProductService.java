@@ -5,6 +5,7 @@ import com.example.demo.persistence.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +63,7 @@ public class ProductService {
     }
 
 
-    public List<ProductEntity> update(ProductEntity entity) {
+    public Optional<ProductEntity> update(ProductEntity entity) {
         validate(entity);
 
         final Optional<ProductEntity> original = repository.findByTitle(entity.getTitle());
@@ -76,7 +77,7 @@ public class ProductService {
             repository.save(product);
         });
 
-        return retrieveAll();
+        return search(entity.getTitle());
     }
 
     public List<ProductEntity> delete(final ProductEntity entity) {

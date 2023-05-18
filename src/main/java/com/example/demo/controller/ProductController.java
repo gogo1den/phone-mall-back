@@ -106,7 +106,7 @@ public class ProductController {
 
             entity.setUserId(dto.getUserId());
 
-            List<ProductEntity> entities = service.update(entity);
+            Optional<ProductEntity> entities = service.update(entity);
 
             List<ProductDTO> dtos = entities.stream().map(ProductDTO::new).collect(Collectors.toList());
 
