@@ -18,16 +18,6 @@ public class ProductService {
     @Autowired
     private ProductRepository repository;
 
-    public String testService() {
-        //ProductEntity 생성
-        ProductEntity entity = ProductEntity.builder().title("My first product item").build();
-        //ProductEntity 저장
-        repository.save(entity);
-        //ProductEntity 검색
-        ProductEntity savedEntity = repository.findById(entity.getId()).get();
-        return savedEntity.getTitle();
-    }
-
     public List<ProductEntity> create(final ProductEntity entity) {
         //Validations
         if(entity == null) {
@@ -44,7 +34,7 @@ public class ProductService {
 
         log.info("Entity Id : {} is saved.", entity.getUserId());
 
-        return retrieveAll();
+        return retrieve(entity.getUserId());
 
     }
 

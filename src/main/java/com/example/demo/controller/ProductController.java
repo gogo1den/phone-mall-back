@@ -6,6 +6,7 @@ import com.example.demo.model.ProductEntity;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class ProductController {
     private ProductService service;
 
     @PostMapping
-    public ResponseEntity<?> createProduct(@RequestBody ProductDTO dto) {
+    public ResponseEntity<?> createProduct(@AuthenticationPrincipal String userId, @RequestBody ProductDTO dto) {
         try {
             String temporaryUserId = "GoEunPark"; //temporary user id.
 
@@ -28,13 +29,7 @@ public class ProductController {
 
             entity.setId(null);
 
-
-            if(dto.getUserId()!=null) {
-                entity.setUserId(dto.getUserId());
-            }
-            else {
-                entity.setUserId(temporaryUserId);
-            }
+            entity.setUserId(userId);
 
             List<ProductEntity> entities = service.create(entity);
 
@@ -52,8 +47,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<?> retrieveProductList() {
-        List<ProductEntity> entities = service.retrieveAll();
+    public ResponseEntity<?> retrieveProductList(@AuthenticationPrincipal String userId) {
+        List<ProductEntity> entities = service.retrieve(userId);
 
         List<ProductDTO> dtos = entities.stream().map(ProductDTO::new).collect(Collectors.toList());
 
@@ -77,13 +72,15 @@ public class ProductController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteProduct(@RequestBody ProductDTO dto){
+    public ResponseEntity<?> deleteProduct(
+            @AuthenticationPrincipal String userId,
+            @RequestBody ProductDTO dto){
         try{
             String temporaryUserId = "GoEunPark";
 
             ProductEntity entity = ProductDTO.toEntity(dto);
 
-            entity.setUserId(temporaryUserId);
+            entity.setUserId(userId);
 
             List<ProductEntity> entities = service.delete(entity);
 
@@ -99,12 +96,14 @@ public class ProductController {
         }
     }
     @PutMapping
-    public ResponseEntity<?> updateProduct(@RequestBody ProductDTO dto) {
+    public ResponseEntity<?> updateProduct(
+            @AuthenticationPrincipal String userId,
+            @RequestBody ProductDTO dto) {
         try {
 
             ProductEntity entity = ProductDTO.toEntity(dto);
 
-            entity.setUserId(dto.getUserId());
+            entity.setUserId(userId);
 
             Optional<ProductEntity> entities = service.update(entity);
 
